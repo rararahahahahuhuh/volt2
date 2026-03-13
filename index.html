@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOLTAGE DASH - PERFECT DESIGN</title>
+    <title>VOLTAGE DASH - PERFECT LAYOUT (YELLOW THUNDER & RED UI)</title>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ui-color: #ff3300;       /* UI: 赤 */
-            --ui-accent: #ff6600;      /* UIアクセント: 明るい赤 */
-            --thunder-color: #ffcc00;  /* 雷の色: 黄色 */
-            --bg-color: #000000;       /* 背景: 黒 */
+            --ui-color: #ff3300;       /* UI: 赤系 */
+            --ui-accent: #ff6600;      /* UIアクセント: 明るい赤系 */
+            --thunder-color: #ffcc00;  /* 雷の色: 黄色 (変更) */
+            --bg-color: #000000;       /* 背景: 完全な黒 */
         }
         
         body { 
@@ -21,6 +21,7 @@
             height: 100vh; color: var(--ui-color);
         }
 
+        /* 走査線エフェクト */
         body::after {
             content: " "; display: block; position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
@@ -31,7 +32,7 @@
         #device-frame {
             position: relative; width: 100%; max-width: 480px; height: 95vh;
             display: flex; flex-direction: column;
-            border: 2px solid #840; box-shadow: 0 0 25px rgba(255, 51, 0, 0.3);
+            border: 2px solid #840; box-shadow: 0 0 25px rgba(255, 51, 0, 0.3); /* 色変更 */
             background: #000; padding: 5px; box-sizing: border-box; overflow: hidden;
         }
 
@@ -45,9 +46,10 @@
         #viewport {
             position: relative; flex-grow: 1; border: 1px solid #310;
             background: #000000; overflow: hidden;
-            display: flex; flex-direction: column;
+            display: flex; flex-direction: column; /* 内部要素配置用 */
         }
         
+        /* キャンバスは背景として配置 */
         canvas { 
             position: absolute; top: 0; left: 0; 
             width: 100%; height: 100%; 
@@ -55,10 +57,11 @@
         }
 
         #hud-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
-        .hud-val { position: absolute; font-size: 16px; text-shadow: 0 0 5px #a00; }
+        .hud-val { position: absolute; font-size: 16px; text-shadow: 0 0 5px #a00; } /* 色変更 */
         #score-disp { top: 10px; right: 10px; text-align: right; }
         #level-disp { top: 10px; left: 10px; }
         
+        /* 中央メッセージ (SIGNAL LOSTなど) */
         #center-msg {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             text-align: center; width: 100%; text-shadow: 0 0 10px var(--ui-color); z-index: 60;
@@ -66,78 +69,81 @@
         h1 { margin: 0; color: var(--ui-accent); letter-spacing: 3px; }
         
         #gauge-container { position: absolute; bottom: 10px; left: 10px; width: 120px; z-index: 50; }
-        #gauge-bar { height: 6px; border: 1px solid #500; margin-top: 2px; background: #100; }
+        #gauge-bar { height: 6px; border: 1px solid #500; margin-top: 2px; background: #100; } /* 色変更 */
         #gauge-fill { height: 100%; width: 0%; background: var(--ui-color); box-shadow: 0 0 5px var(--ui-color); }
 
         #ui-footer { height: 40px; display: flex; gap: 4px; margin-top: 5px; z-index: 20; position: relative; flex-shrink: 0;}
-        .btn { flex: 1; border: 1px solid #500; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 9px; color: #600; background: rgba(50, 0, 0, 0.2); }
+        .btn { flex: 1; border: 1px solid #500; display: flex; flex-direction: column; justify-content: center; align-items: center; font-size: 9px; color: #600; background: rgba(50, 0, 0, 0.2); } /* 色変更 */
         .btn.active { border-color: var(--ui-color); color: var(--ui-color); }
 
         .hidden { display: none !important; }
         .blink { animation: blink 0.5s step-end infinite alternate; }
         @keyframes blink { from { opacity: 1; } to { opacity: 0.3; } }
         
-        /* ★タイトル画面: 画面中央に要素をまとめる */
+        /* ★修正: タイトル画面の均等配置レイアウト */
         #start-screen-layer {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; 
-            justify-content: center; /* 完全に中央寄せ */
+            justify-content: space-evenly; /* 均等配置で重なり防止 */
             align-items: center;     
             z-index: 70; pointer-events: none;
-            background: rgba(0,0,0,0.6); /* 文字を見やすくするため少し暗く */
+            background: rgba(0,0,0,0.4); /* 背景を少し暗くして文字を見やすく */
+            padding: 20px 0;
             box-sizing: border-box;
-            padding: 10px;
-        }
-        
-        /* 1. 自作ロゴ: 大きく配置 */
-        #custom-logo {
-            width: 240px; /* ここで大きさを調整 */
-            height: auto;
-            margin-bottom: 10px; 
-            filter: drop-shadow(0 0 15px rgba(255, 204, 0, 0.8)); /* 黄色い光 */
-            background-color: transparent;
+            gap: 10px; /* 要素間の隙間 */
         }
 
-        /* 2. タイトル文字: 小さく */
+        /* 1. 自作画像ロゴ: 大きく配置 (変更) */
+        #custom-logo {
+            width: 250px; /* 大きく表示 (変更) */
+            height: auto;
+            filter: drop-shadow(0 0 15px rgba(255, 204, 0, 0.8)); /* 黄色い光 (色変更) */
+            background-color: transparent; /* 背景を確実に透過 */
+            flex-shrink: 0;
+        }
+
+        /* 2. タイトル文字: 小さく (変更) */
+        #title-text-group { text-align: center; }
+        
         #start-title { 
-            font-size: 22px; 
-            color: var(--ui-color); 
-            text-shadow: 0 0 10px var(--ui-color); 
-            letter-spacing: 4px; 
-            margin: 0 0 20px 0; 
+            font-size: 20px; /* 小さく (変更) */
+            color: var(--ui-accent); 
+            text-shadow: 0 0 15px var(--ui-accent); 
+            letter-spacing: 6px; 
+            margin: 0; 
             text-align: center; 
+            width: 100%;
             line-height: 1.1;
         }
         
         /* 3. TAP TO START */
         #start-prompt { 
             font-size: 16px; 
-            color: #ffffff; 
-            text-shadow: 0 0 8px #ffffff;
-            margin: 0 0 25px 0; 
+            color: var(--ui-color); 
+            margin: 0; 
             text-align: center;
+            width: 100%;
         }
 
-        /* 4. ランキングリスト: しっかり枠の中に収める */
+        /* 4. ランキング表: 下に配置 */
         #ranking-container {
             text-align: center;
-            background: rgba(50, 0, 0, 0.7); /* 赤黒い半透明の枠 */
+            background: rgba(0, 0, 0, 0.6);
             padding: 10px 20px;
-            border: 1px solid var(--ui-color);
-            border-radius: 5px;
-            width: 220px;
+            border: 1px solid #530;
+            width: 80%;
         }
         .rank-header { 
-            color: var(--ui-color); 
+            color: #ff3300; 
             font-size: 14px; 
             margin-bottom: 5px; 
             letter-spacing: 2px; 
-            border-bottom: 1px solid var(--ui-color); 
+            border-bottom: 1px solid #530; 
             display: inline-block;
             padding-bottom: 2px;
         }
         .rank-row { font-size: 16px; margin: 4px 0; display: flex; justify-content: space-between; }
-        .rank-1 { color: var(--thunder-color); font-weight: bold; text-shadow: 0 0 5px var(--thunder-color); } /* 1位は黄色 */
+        .rank-1 { color: #ffcc00; font-weight: bold; text-shadow: 0 0 5px #ffcc00; } /* 1位は黄色 */
         .rank-other { color: #ff9999; } /* 2位以降は薄い赤 */
 
     </style>
@@ -166,9 +172,13 @@
 
         <div id="start-screen-layer">
             <img id="custom-logo" src="logo.png" alt="CUSTOM LOGO">
-            <h1 id="start-title">VOLTAGE<br>DASH</h1>
-            <p id="start-prompt" class="blink">[ TAP TO START ]</p>
             
+            <div id="title-text-group">
+                <h1 id="start-title">VOLTAGE DASH</h1>
+            </div>
+
+            <p id="start-prompt" class="blink">[ TAP TO START ]</p>
+
             <div id="ranking-container">
                 <div class="rank-header">- TOP RECORDS -</div>
                 <div id="ranking-list"></div>
@@ -185,8 +195,10 @@
 </div>
 
 <script>
-    const Sound={ctx:null,init:function(){if(!this.ctx){const AC=window.AudioContext||window.webkitAudioContext;this.ctx=new AC()}if(this.ctx.state==='suspended'){this.ctx.resume()}},play:function(t,f,d,v){if(!this.ctx)return;const o=this.ctx.createOscillator();const g=this.ctx.createGain();o.type=t;o.frequency.setValueAtTime(f,this.ctx.currentTime);g.gain.setValueAtTime(v,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,this.ctx.currentTime+d);o.connect(g);g.connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+d)},noise:function(d,v){if(!this.ctx)return;const b=this.ctx.createBuffer(1,this.ctx.sampleRate*d,this.ctx.sampleRate);const x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=Math.random()*2-1;const s=this.ctx.createBufferSource();s.buffer=b;const g=this.ctx.createGain();g.gain.setValueAtTime(v,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.01,this.ctx.currentTime+d);s.connect(g);g.connect(this.ctx.destination);s.start()},turn:function(){this.play('square',600,0.05,0.1)},coin:function(){this.play('sawtooth',1200,0.08,0.1);setTimeout(()=>this.play('sawtooth',2000,0.1,0.1),50)},powerUp:function(){this.play('square',880,0.1,0.2);setTimeout(()=>this.play('square',1760,0.3,0.2),100)},levelUp:function(){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.play('square',f,0.1,0.1),i*100))},overload:function(){this.noise(0.5,0.2)},charge:function(){this.play('sawtooth',100+Math.random()*50,0.1,0.05)},beam:function(){this.noise(0.8,0.3);this.play('sawtooth',50,0.5,0.5)},crash:function(){this.noise(1.0,0.5)},startBGM:function(fast){if(this.bgmTimer)clearInterval(this.bgmTimer);let s=fast?100:150;this.bgmTimer=setInterval(()=>{if(!this.ctx)return;let n=[110,110,220,110][this.bgmNote%4]*(fast?1.2:1);this.play('sawtooth',n,0.1,0.05);this.bgmNote++},s)},stopBGM:function(){if(this.bgmTimer)clearInterval(this.bgmTimer)}};
+    // --- Audio System (音を消すためメソッドを空にする) ---
+    const Sound={ctx:null,init:function(){},play:function(){},noise:function(){},turn:function(){},coin:function(){},powerUp:function(){},levelUp:function(){},overload:function(){},charge:function(){},beam:function(){},crash:function(){},startBGM:function(){},stopBGM:function(){}};
 
+    // --- References ---
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d', { alpha: false });
     const parent = document.getElementById('viewport');
@@ -197,16 +209,17 @@
     const elMsg = document.getElementById('center-msg');
     const elMsgTitle = document.getElementById('msg-title');
     const elMsgSub = document.getElementById('msg-sub');
-    const startScreenLayer = document.getElementById('start-screen-layer');
+    const frameEl = document.getElementById('device-frame');
     const hudLayer = document.getElementById('hud-layer');
+    const startScreenLayer = document.getElementById('start-screen-layer');
     const headerStatus = document.getElementById('header-status');
     const rankingListEl = document.getElementById('ranking-list');
-    const frameEl = document.getElementById('device-frame');
 
     let W, H;
     const resize = () => { W = canvas.width = parent.clientWidth; H = canvas.height = parent.clientHeight; initBgParticles(); };
     window.addEventListener('resize', resize);
 
+    // --- State ---
     let gameState = 'START';
     let score = 0; let displayScore = 0;
     let level = 1; let nextLevelScore = 1500; const SCORE_PER_LEVEL = 1500; 
@@ -234,7 +247,7 @@
     let beamActive = 0; 
     let originalSpeed = 0; 
 
-    // ランキングシステム
+    // --- Ranking System ---
     let rankingData = [];
     const RANKING_KEY = 'voltage_dash_ranking';
 
@@ -266,6 +279,7 @@
     }
     loadRanking();
 
+    // --- Game Logic ---
     function initBgParticles() {
         bgParticles = [];
         const count = Math.floor((W * H) / 250); 
@@ -274,6 +288,7 @@
                 x: Math.random() * W,
                 y: Math.random() * H,
                 size: Math.random() < 0.6 ? 1.5 : 2.5,
+                // 色を赤系に (変更)
                 color: `rgba(${150 + Math.random()*105}, 0, 0, ${0.5 + Math.random()*0.4})`,
                 speedMod: 0.5 + Math.random() * 1.5
             });
@@ -313,7 +328,7 @@
     window.addEventListener('keyup', (e) => { if(e.code==='Space') handleEnd(e); });
 
     function fireDischarge() {
-        Sound.beam(); addFloatingText("DISCHARGE", player.x, player.y - 50, '#ffcc00');
+        Sound.beam(); addFloatingText("DISCHARGE", player.x, player.y - 50, '#ffcc00'); // テキストを黄色に
         screenShake = 15; flashIntensity = 0.8; hitStop = 4; 
         if (beamActive <= 0) { originalSpeed = baseSpeed; baseSpeed += 15.0; }
         beamActive = 45; 
@@ -373,12 +388,13 @@
         
         isNewRecord = saveRanking(score);
 
+        // ★修正: 0.3倍の等倍スケーリング（1:1維持）
         let displayScale = 0.3; 
-        let stepY = baseSpeed * displayScale; 
+        let stepY = baseSpeed * displayScale; // 縦方向も0.3倍
         
-        maxScrollY = totalDistance * displayScale; 
+        maxScrollY = totalDistance * displayScale; // 距離も0.3倍
         resultScrollY = 0;
-        scrollSpeed = baseSpeed * displayScale; 
+        scrollSpeed = baseSpeed * displayScale; // 速度も0.3倍で同期
     }
 
     function checkLevelUp() {
@@ -388,6 +404,7 @@
             if (beamActive > 0) originalSpeed = newBaseSpeed; else baseSpeed = newBaseSpeed;
             spawnRate = Math.max(10, 30 - (level * 2));
             let absDx = Math.min(8.0, 4.0 + (level - 1) * 0.3); player.dx = (player.dx > 0 ? 1 : -1) * absDx;
+            // 黄色を赤へ (変更)
             addFloatingText("LEVEL UP", W/2, H/2, '#ff3300'); Sound.levelUp(); flashIntensity = 0.6; 
             elLevel.innerText = "LVL: " + (level<10?"0"+level:level);
         }
@@ -426,7 +443,7 @@
             generateCloudChunk(subOffsetX, subOffsetY, mainParticleCount * 0.6, mainRadius * 0.7, mainSpread * 0.8);
         }
         let totalRadius = mainRadius * 1.4;
-        obstacles.push({ x: x, y: y, r: totalRadius, cloudParticles: cloudParticles, grazed: false, passed: false });
+        obstacles.push({ x: x, y: y, r: totalRadius, cloudParticles: cloudParticles, passes: false }); // passes変更なし
         
         if (spawnItem) { 
             let safe = false; let retry = 0; let itemX, itemY;
@@ -451,6 +468,7 @@
     function activateOverload() {
         if(isOverload) return; isOverload = true; overloadTimer = 300; flashIntensity = 0.5; screenShake = 20; 
         Sound.overload(); Sound.startBGM(true);
+        // 黄色を赤へ (変更)
         addFloatingText("OVERLOAD!", W/2, H/3, '#ff3300');
     }
 
@@ -494,13 +512,16 @@
             if(dist < obs.r * 0.7) { 
                 if (beamActive > 0 || isOverload) {
                     Sound.overload(); score += 500; screenShake = 12; hitStop = 4; 
-                    addFloatingText("CLOUD BRK", obs.x, obs.y, '#ffcc00'); obstacles.splice(i, 1);
+                    addFloatingText("CLOUD BRK", obs.x, obs.y, '#ffcc00'); obstacles.splice(i, 1); // テキストを黄色に
                 } else { gameOver(); return; }
                 continue;
             }
-            if (!isOverload && !obs.grazed && dist < obs.r + 30) {
-                obs.grazed = true; score += 100; addFloatingText("NEAR", player.x, player.y - 30, '#ffcc00');
+            // ★ニアミス判定とテキスト表示を削除
+            /*
+            if (!isOverload && !obs.passes && dist < obs.r + 30) {
+                obs.passes = true; score += 100; addFloatingText("NEAR", player.x, player.y - 30, '#ffcc00'); // 黄色に変更
             }
+            */
             if(obs.y < -300) obstacles.splice(i, 1);
         }
 
@@ -508,10 +529,11 @@
             let item = items[i]; item.y -= baseSpeed;
             if(Math.hypot(player.x - item.x, player.y - item.y) < 40) { 
                 if(item.type === 'YELLOW') {
-                    score += 500; addFloatingText("+500", item.x, item.y, '#ffcc00'); Sound.coin();
+                    // 黄色を赤へ (変更)
+                    score += 500; addFloatingText("+500", item.x, item.y, '#ffcc00'); Sound.coin(); // テキストを黄色に
                     if(!isOverload) { overloadPoints++; if(overloadPoints >= OVERLOAD_MAX) activateOverload(); }
                 } else {
-                    score += 1000; addFloatingText("MAX", item.x, item.y, '#ffcc00'); Sound.powerUp(); activateOverload();
+                    score += 1000; addFloatingText("MAX", item.x, item.y, '#ffcc00'); Sound.powerUp(); activateOverload(); // テキストを黄色に
                 }
                 items.splice(i, 1); hitStop = 2; continue;
             }
@@ -558,17 +580,26 @@
         ctx.textAlign = 'center'; 
         
         if (isNewRecord) {
-            if (Math.floor(Date.now() / 200) % 2 === 0) ctx.fillStyle = '#ff0000'; else ctx.fillStyle = '#ffcc00';
-            ctx.font = '32px "Share Tech Mono"'; ctx.fillText(`NEW RECORD!`, W/2, 40);
-            ctx.fillStyle = '#fff'; ctx.fillText(`${score}`, W/2, 80);
+            // NEW RECORDの場合は派手に
+            if (Math.floor(Date.now() / 200) % 2 === 0) {
+                ctx.fillStyle = '#ff0000'; // そのまま
+            } else {
+                ctx.fillStyle = '#ffcc00'; // 黄色を赤へ (変更)
+            }
+            ctx.font = '32px "Share Tech Mono"'; 
+            ctx.fillText(`NEW RECORD!`, W/2, 40);
+            ctx.fillStyle = '#fff'; 
+            ctx.fillText(`${score}`, W/2, 80);
         } else {
-            ctx.fillStyle = '#fff'; ctx.font = '24px "Share Tech Mono"'; ctx.fillText(`SCORE: ${score}`, W/2, 50);
+            ctx.fillStyle = '#fff'; 
+            ctx.font = '24px "Share Tech Mono"'; 
+            ctx.fillText(`SCORE: ${score}`, W/2, 50);
             let rank = "C"; if(score>3000)rank="B"; if(score>6000)rank="A"; if(score>10000)rank="S"; if(score>20000)rank="SS"; if(score>50000)rank="SSS";
-            ctx.fillStyle = '#ffcc00'; ctx.font = '40px "Share Tech Mono"'; ctx.fillText(`RANK ${rank}`, W/2, 90);
+            ctx.fillStyle = '#ffcc00'; ctx.font = '40px "Share Tech Mono"'; ctx.fillText(`RANK ${rank}`, W/2, 90); // 黄色を赤へ (変更)
         }
 
         ctx.save();
-        ctx.strokeStyle = '#330000'; ctx.lineWidth = 1;
+        ctx.strokeStyle = '#330000'; ctx.lineWidth = 1; // 色変更
         ctx.beginPath();
         for(let gx=0; gx<=graphW; gx+=50) { ctx.moveTo(gx, graphY); ctx.lineTo(gx, graphY+graphH); }
         for(let gy=0; gy<=graphH; gy+=50) { ctx.moveTo(0, graphY+gy); ctx.lineTo(graphW, graphY+gy); }
@@ -576,19 +607,17 @@
 
         ctx.beginPath(); ctx.rect(0, graphY, graphW, graphH); ctx.clip();
 
+        // ★修正: 0.3倍の等倍スケーリング（1:1維持）
         let displayScale = 0.3; 
-        let stepY = baseSpeed * displayScale; 
+        let stepY = baseSpeed * displayScale; // 縦方向も0.3倍
         
-        let scaledTotalH = totalDistance * displayScale;
-        let visibleH = graphH;
-        let maxScrollLimit = Math.max(0, scaledTotalH - visibleH + 200); 
-
-        if (resultScrollY < maxScrollLimit) { resultScrollY += scrollSpeed; } 
-        else { resultScrollY = maxScrollLimit; } 
+        maxScrollY = totalDistance * displayScale; // 距離も0.3倍
+        resultScrollY = 0;
+        scrollSpeed = baseSpeed * displayScale; // 速度も0.3倍で同期
 
         if (pathHistory.length > 1) {
             ctx.beginPath();
-            // ★リザルト画面の雷も黄色に
+            // ★チャージしてスピードが上がった時、雷を黄色のままで (変更)
             ctx.shadowColor = '#ffcc00'; 
             ctx.shadowBlur = 0; 
             ctx.strokeStyle = '#ffcc00'; 
@@ -600,8 +629,12 @@
             for(let i = 0; i < pathHistory.length; i++) {
                 let p = pathHistory[i];
                 let rawX = p.x;
+                // rawX は 0~W
+                // 中心基準で0.3倍に縮小
                 let distFromCenter = rawX - (W / 2);
                 let px = (W / 2) + (distFromCenter * displayScale);
+
+                // Y座標
                 let drawY = graphY + (p.dist * displayScale) - resultScrollY;
 
                 if (i === 0) ctx.moveTo(px, drawY); else ctx.lineTo(px, drawY);
@@ -626,7 +659,7 @@
         }
         ctx.restore();
 
-        ctx.fillStyle = '#ff3300'; ctx.font = '12px "Share Tech Mono"';
+        ctx.fillStyle = '#ff3300'; ctx.font = '12px "Share Tech Mono"'; // 黄色を赤へ (変更)
         ctx.fillText("TAP TO RETURN TITLE", W/2, graphY + graphH + 30);
     }
 
@@ -641,7 +674,7 @@
 
         if (gameState === 'PLAYING' || gameState === 'GAMEOVER_ANIM') {
             obstacles.forEach(obs => {
-                let color = obs.grazed ? '0, 255, 255' : '255, 50, 0';
+                let color = '255, 50, 0'; // ★雲に近づいた時に青くなるのをやめましょう (赤に統一)
                 obs.cloudParticles.forEach(cp => {
                     ctx.fillStyle = `rgba(${color}, ${cp.alpha})`; ctx.fillRect(obs.x + cp.ox, obs.y + cp.oy, cp.size, cp.size);
                 });
@@ -657,12 +690,13 @@
             points.push({x: player.x, y: player.y});
 
             if(points.length > 1) {
-                // ★通常時の雷を黄色(#ffcc00)に変更
-                let glowColor = (beamActive>0 || isOverload) ? '#00ffff' : '#ffcc00';
-                if(isOverload) glowColor = '#ff3300';
+                let glowColor = (beamActive>0 || isOverload) ? '#00ffff' : '#ffcc00'; // ★通常時の雷を黄色(#ffcc00)に変更
+                if(isOverload) glowColor = '#ff3300'; // 黄色を赤へ (変更)
+                // ★チャージしてスピードが上がった時(isOverload=false, beamActive>0)，雷を黄色のままで (変更)
+                if(beamActive > 0 && !isOverload) glowColor = '#ffcc00';
 
                 if(isOverload) {
-                     ctx.shadowBlur = 40; ctx.shadowColor = '#cc0000'; ctx.strokeStyle = '#cc0000'; ctx.lineWidth = 10;
+                     ctx.shadowBlur = 40; ctx.shadowColor = '#cc0000'; ctx.strokeStyle = '#cc0000'; ctx.lineWidth = 10; // 黄色を赤へ (変更)
                      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
                      ctx.beginPath(); ctx.moveTo(points[0].x, points[0].y);
                      for(let i=1; i<points.length; i++) ctx.lineTo(points[i].x, points[i].y); ctx.stroke();
@@ -702,8 +736,8 @@
 
             ctx.globalCompositeOperation = 'source-over';
             items.forEach(item => {
-                // ★アイテムも黄色に
-                let col = item.type === 'YELLOW' ? '#ffcc00' : '#00ffff';
+                // 黄色を赤へ (変更)
+                let col = item.type === 'YELLOW' ? '#ffcc00' : '#00ffff'; // アイテムを黄色に
                 drawThunderShape(ctx, item.x, item.y, 1.5, col, 15);
             });
 
